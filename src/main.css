@@ -77,6 +77,10 @@ body { font-family: Arial; }
 		-o-transform-origin:top left;      -o-transform:rotate(-90deg);
 		transform-origin:top left;         transform:rotate(-90deg);
 }
+
+
+
+
 #bulkarea .body { padding: 5px 0 0 0; }
 #bulkarea .format { font-style: italic; font-size: 90%; }
 #bulktextarea { font-size: 90%; width: 98%; margin: 4px 0 0 0; }
@@ -157,7 +161,7 @@ body { font-family: Arial; }
 	#detailprivkey { width: 250px; }
 	#detailprivkeypassphrase { width: 250px; }
 	.paper .commands { border: 2px solid green; }
-	#bulkstartindex, #paperlimit, #paperlimitperpage { width: 35px; } 
+	#bulkstartindex, #paperlimit, #paperlimitperpage, #shareCount, #thresholdCount { width: 35px; }
 	#bulklimit { width: 45px; }
 			
 	.footer { font-family: Arial; font-size: 90%; clear: both; width: 750px; padding: 10px 0 10px 0; margin: 50px auto auto auto; }

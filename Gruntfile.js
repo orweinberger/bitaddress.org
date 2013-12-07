@@ -30,6 +30,7 @@ module.exports = function (grunt) {
 					{ token: "//ninja.unittests.js", file: "./src/ninja.unittests.js" },
 					{ token: "//ninja.translator.js", file: "./src/ninja.translator.js" },
 					{ token: "//ninja.singlewallet.js", file: "./src/ninja.singlewallet.js" },
+          { token: "//secrets.js", file: "./src/secrets.js" },
 					{ token: "//ninja.paperwallet.js", file: "./src/ninja.paperwallet.js" },
 					{ token: "//ninja.bulkwallet.js", file: "./src/ninja.bulkwallet.js" },
 					{ token: "//ninja.brainwallet.js", file: "./src/ninja.brainwallet.js" },

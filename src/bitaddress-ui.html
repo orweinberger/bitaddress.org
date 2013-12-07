@@ -182,7 +182,10 @@
 					<div id="papercommands" class="row">
 						<span><label id="paperlabelhideart">Hide Art?</label> <input type="checkbox" id="paperart" onchange="ninja.wallets.paperwallet.toggleArt(this);" /></span>
 						<span><label id="paperlabeladdressestogenerate">Addresses to generate:</label> <input type="text" id="paperlimit" /></span>
-						<span><input type="button" id="papergenerate" value="Generate" onclick="ninja.wallets.paperwallet.build(document.getElementById('paperlimit').value * 1, document.getElementById('paperlimitperpage').value * 1, !document.getElementById('paperart').checked, document.getElementById('paperpassphrase').value);" /></span>
+						<span><input type="button" id="papergenerate" value="Generate" onclick="ninja.wallets.paperwallet.build(document.getElementById('paperlimit').value * 1, document.getElementById('paperlimitperpage').value * 1, !document.getElementById('paperart').checked, false, document.getElementById('paperpassphrase').value);" /></span>
+            <span><label id="splitsharecount">Split share count:</label><input type="text" id="shareCount" value="3" width="25" /></span>
+            <span><label id="splitthresholdcount">Split threshold count:</label><input type="text" id="thresholdCount" value="2" /></span>
+            <span><input type="button" id="papersplit" value="Generate Split" onclick="ninja.wallets.paperwallet.generateSplitWallet();" /></span>
 						<span class="print"><input type="button" name="print" value="Print" id="paperprint" onclick="window.print();" /></span>
 					</div>
 					<div id="paperadvancedcommands" class="row extra">
@@ -452,6 +455,9 @@
 	<script type="text/javascript">
 //ninja.singlewallet.js
 	</script>
+  <script type="text/javascript">
+//secrets.js
+  </script>
 	<script type="text/javascript">
 //ninja.paperwallet.js
 	</script>
