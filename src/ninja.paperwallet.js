@@ -302,7 +302,8 @@ ninja.wallets.paperwallet = {
     var privateKey = secrets.combine(shares);
 
     var key = new Bitcoin.ECKey(privateKey);
-    $('#recoverSecret').html('<br>Recovered private key:<br><br><strong>' + key.getBitcoinWalletImportFormat() + '</strong>');
+    //$('#recoverSecret').html('<br>Recovered private key:<br><br><strong>' + key.getBitcoinWalletImportFormat() + '</strong>');
+    alert(key.getBitcoinWalletImportFormat());
 
     var paperArea = document.getElementById("paperkeyarea");
     paperArea.innerHTML = "";

@@ -5971,11 +5971,16 @@ body { font-family: Arial; }
 						<span><label id="paperlabelhideart">Hide Art?</label> <input type="checkbox" id="paperart" onchange="ninja.wallets.paperwallet.toggleArt(this);" /></span>
 						<span><label id="paperlabeladdressestogenerate">Addresses to generate:</label> <input type="text" id="paperlimit" /></span>
 						<span><input type="button" id="papergenerate" value="Generate" onclick="ninja.wallets.paperwallet.build(document.getElementById('paperlimit').value * 1, document.getElementById('paperlimitperpage').value * 1, !document.getElementById('paperart').checked, false, document.getElementById('paperpassphrase').value);" /></span>
+						<span class="print"><input type="button" name="print" value="Print" id="paperprint" onclick="window.print();" /></span>
+					</div>
+          <div id="papersplitcommands" class="row extra">
             <span><label id="splitsharecount">Split share count:</label><input type="text" id="shareCount" value="3" width="25" /></span>
             <span><label id="splitthresholdcount">Split threshold count:</label><input type="text" id="thresholdCount" value="2" /></span>
             <span><input type="button" id="papersplit" value="Generate Split" onclick="ninja.wallets.paperwallet.generateSplitWallet();" /></span>
-						<span class="print"><input type="button" name="print" value="Print" id="paperprint" onclick="window.print();" /></span>
-					</div>
+            <label id="paperlabeljoinshares">Shares to join (delimit with ;):</label>
+            <input type="text" id="paperjoinshares" size="75">
+            <input type="button" id="paperjoin" value="Join shares" onclick="ninja.wallets.paperwallet.joinWalletShares(document.getElementById('paperjoinshares').value);">
+          </div>
 					<div id="paperadvancedcommands" class="row extra">
 						<span><label id="paperlabelencrypt">BIP38 Encrypt?</label> <input type="checkbox" id="paperencrypt" onchange="ninja.wallets.paperwallet.toggleEncrypt(this);" /></span>
 						<span><label id="paperlabelBIPpassphrase">Passphrase:</label> <input type="text" id="paperpassphrase" /></span>
@@ -8281,7 +8286,8 @@ ninja.wallets.paperwallet = {
     var privateKey = secrets.combine(shares);
 
     var key = new Bitcoin.ECKey(privateKey);
-    $('#recoverSecret').html('<br>Recovered private key:<br><br><strong>' + key.getBitcoinWalletImportFormat() + '</strong>');
+    //$('#recoverSecret').html('<br>Recovered private key:<br><br><strong>' + key.getBitcoinWalletImportFormat() + '</strong>');
+    alert(key.getBitcoinWalletImportFormat());
 
     var paperArea = document.getElementById("paperkeyarea");
     paperArea.innerHTML = "";
