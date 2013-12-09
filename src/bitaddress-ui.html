@@ -191,9 +191,9 @@
             <span><input type="button" id="papersplit" value="Generate Split" onclick="ninja.wallets.paperwallet.generateSplitWallet();" /></span>
           </div>
           <div id="paperjoincommands" class="row extra">
-            <label id="paperlabeljoinshares">Shares to join (delimit with ;):</label>
-            <input type="text" id="paperjoinshares" size="75">
-            <input type="button" id="paperjoin" value="Join shares" onclick="ninja.wallets.paperwallet.joinWalletShares(document.getElementById('paperjoinshares').value);">
+            <span><label id="paperlabeljoinshares">Shares to join (delimit with ;):</label></span>
+            <span><input type="text" id="paperjoinshares" size="75"></span>
+            <span><input type="button" id="paperjoin" value="Join shares" onclick="ninja.wallets.paperwallet.joinWalletShares(document.getElementById('paperjoinshares').value);"></span>
           </div>
 					<div id="paperadvancedcommands" class="row extra">
 						<span><label id="paperlabelencrypt">BIP38 Encrypt?</label> <input type="checkbox" id="paperencrypt" onchange="ninja.wallets.paperwallet.toggleEncrypt(this);" /></span>

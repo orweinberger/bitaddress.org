@@ -5979,9 +5979,9 @@ body { font-family: Arial; }
             <span><input type="button" id="papersplit" value="Generate Split" onclick="ninja.wallets.paperwallet.generateSplitWallet();" /></span>
           </div>
           <div id="paperjoincommands" class="row extra">
-            <label id="paperlabeljoinshares">Shares to join (delimit with ;):</label>
-            <input type="text" id="paperjoinshares" size="75">
-            <input type="button" id="paperjoin" value="Join shares" onclick="ninja.wallets.paperwallet.joinWalletShares(document.getElementById('paperjoinshares').value);">
+            <span><label id="paperlabeljoinshares">Shares to join (delimit with ;):</label></span>
+            <span><input type="text" id="paperjoinshares" size="75"></span>
+            <span><input type="button" id="paperjoin" value="Join shares" onclick="ninja.wallets.paperwallet.joinWalletShares(document.getElementById('paperjoinshares').value);"></span>
           </div>
 					<div id="paperadvancedcommands" class="row extra">
 						<span><label id="paperlabelencrypt">BIP38 Encrypt?</label> <input type="checkbox" id="paperencrypt" onchange="ninja.wallets.paperwallet.toggleEncrypt(this);" /></span>
@@ -8088,46 +8088,7 @@ ninja.wallets.paperwallet = {
   generateNewWallet: function (idPostFix) {
     if (ninja.wallets.paperwallet.encrypt) {
       ninja.privateKey.BIP38GenerateECAddressAsync(ninja.wallets.paperwallet.intermediatePoint, false, function (address, encryptedKey) {
-        console.log(address,encryptedKey);
 
-        var keyhex = secrets.str2hex(encryptedKey);
-
-        var shares = secrets.share(keyhex,3,2);
-
-        console.log('shares',shares);
-
-        /*
-
-
-        var bigIntOfEncryptedKey = new BigInteger(encryptedKey,16);
-        var UnsignedEncryptedKey = bigIntOfEncryptedKey.toByteArrayUnsigned();
-
-        var hexkey = Crypto.util.bytesToHex(UnsignedEncryptedKey);
-        var secretkey = secrets.share(hexkey.toString().toUpperCase(), 3, 2);
-
-        var bigIntOfShare = new BigInteger(secretkey[0],16);
-        var byteArrayOfShare = bigIntOfShare.toByteArrayUnsigned();
-        var base58OfShare = Bitcoin.Base58.encode(byteArrayOfShare);
-        console.log('share1', base58OfShare);
-
-        var bigIntOfShare1 = new BigInteger(secretkey[1],16);
-        var byteArrayOfShare1 = bigIntOfShare1.toByteArrayUnsigned();
-        var base58OfShare1 = Bitcoin.Base58.encode(byteArrayOfShare1);
-
-        console.log('share2', base58OfShare1);
-
-        var notbase58OfShare1 = Bitcoin.Base58.decode(base58OfShare1);
-        var notbyteArrayOfShare1 = BigInteger.fromByteArrayUnsigned(notbase58OfShare1);
-        var notbigIntOfShare1 = notbyteArrayOfShare1.toString(16);
-
-
-        var notbase58OfShare = Bitcoin.Base58.decode(base58OfShare);
-        var notbyteArrayOfShare = BigInteger.fromByteArrayUnsigned(notbase58OfShare);
-        var notbigIntOfShare = notbyteArrayOfShare.toString(16);
-
-        var combined = secrets.combine([notbigIntOfShare,notbigIntOfShare1]);
-        console.log('combined',combined);
-        */
         if (ninja.wallets.paperwallet.useArtisticWallet) {
           ninja.wallets.paperwallet.showArtisticWallet(idPostFix, address, encryptedKey);
         }
@@ -8171,7 +8132,6 @@ ninja.wallets.paperwallet = {
 
     var base58OfShare = Bitcoin.Base58.encode(byteArrayOfShare);
     //alert("base58OfShare:" + base58OfShare);
-    console.log(base58OfShare);
     if (ninja.wallets.paperwallet.useArtisticWallet) {
       ninja.wallets.paperwallet.showArtisticWallet(idPostFix, ninja.wallets.paperwallet.sharesBitcoinAddress, base58OfShare);
     }
@@ -8193,7 +8153,7 @@ ninja.wallets.paperwallet = {
     }
 
     var privateKey = secrets.combine(shares);
-    console.log('privatekey', privateKey);
+
     var key = new Bitcoin.ECKey(privateKey);
     //$('#recoverSecret').html('<br>Recovered private key:<br><br><strong>' + key.getBitcoinWalletImportFormat() + '</strong>');
     alert(key.getBitcoinWalletImportFormat());
