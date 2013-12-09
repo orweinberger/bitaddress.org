@@ -189,6 +189,8 @@
             <span><label id="splitsharecount">Split share count:</label><input type="text" id="shareCount" value="3" width="25" /></span>
             <span><label id="splitthresholdcount">Split threshold count:</label><input type="text" id="thresholdCount" value="2" /></span>
             <span><input type="button" id="papersplit" value="Generate Split" onclick="ninja.wallets.paperwallet.generateSplitWallet();" /></span>
+          </div>
+          <div id="paperjoincommands" class="row extra">
             <label id="paperlabeljoinshares">Shares to join (delimit with ;):</label>
             <input type="text" id="paperjoinshares" size="75">
             <input type="button" id="paperjoin" value="Join shares" onclick="ninja.wallets.paperwallet.joinWalletShares(document.getElementById('paperjoinshares').value);">

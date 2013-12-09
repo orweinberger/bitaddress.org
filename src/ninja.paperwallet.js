@@ -45,7 +45,6 @@ ninja.wallets.paperwallet = {
     ninja.wallets.paperwallet.useSplitShares = useSplitShares;
     document.getElementById("paperkeyarea").innerHTML = "";
     if (ninja.wallets.paperwallet.encrypt) {
-      console.log('pass', passphrase);
       document.getElementById("busyblock").className = "busy";
       ninja.privateKey.BIP38GenerateIntermediatePointAsync(passphrase, null, null, function (intermediate) {
         ninja.wallets.paperwallet.intermediatePoint = intermediate;
@@ -103,6 +102,7 @@ ninja.wallets.paperwallet = {
   generateNewWallet: function (idPostFix) {
     if (ninja.wallets.paperwallet.encrypt) {
       ninja.privateKey.BIP38GenerateECAddressAsync(ninja.wallets.paperwallet.intermediatePoint, false, function (address, encryptedKey) {
+
         if (ninja.wallets.paperwallet.useArtisticWallet) {
           ninja.wallets.paperwallet.showArtisticWallet(idPostFix, address, encryptedKey);
         }
@@ -121,6 +121,81 @@ ninja.wallets.paperwallet = {
       else {
         ninja.wallets.paperwallet.showWallet(idPostFix, bitcoinAddress, privateKeyWif);
       }
+    }
+  },
+  generateNewWalletShare: function (idPostFix, numShares, threshold) {
+    if (idPostFix == 1) {
+      var key = new Bitcoin.ECKey(false);
+
+      ninja.wallets.paperwallet.sharesBitcoinAddress = key.getBitcoinAddress();
+      ninja.wallets.paperwallet.sharesPrivateKey = key.getBitcoinWalletImportFormat();
+
+      // split into 5 shares, with a threshold of 3
+      ninja.wallets.paperwallet.shares = secrets.share(key.getBitcoinHexFormat(), numShares, threshold);
+
+      //alert("Shares:" + ninja.wallets.paperwallet.shares);
+    }
+
+    //alert("Share: " + ninja.wallets.paperwallet.shares[idPostFix - 1]);
+
+    var bigintOfShare = new BigInteger(ninja.wallets.paperwallet.shares[idPostFix - 1], 16);
+    //alert("BigInt of share:" + bigintOfShare);
+
+    var byteArrayOfShare = bigintOfShare.toByteArrayUnsigned();
+    //alert("ByteArray of share:" + byteArrayOfShare);
+
+    var base58OfShare = Bitcoin.Base58.encode(byteArrayOfShare);
+    //alert("base58OfShare:" + base58OfShare);
+    if (ninja.wallets.paperwallet.useArtisticWallet) {
+      ninja.wallets.paperwallet.showArtisticWallet(idPostFix, ninja.wallets.paperwallet.sharesBitcoinAddress, base58OfShare);
+    }
+    else {
+      ninja.wallets.paperwallet.showWallet(idPostFix, ninja.wallets.paperwallet.sharesBitcoinAddress, base58OfShare);
+    }
+  },
+
+  joinWalletShares: function (strShares) {
+
+    var res = strShares.split(";");
+    var shares = [];
+
+
+    for (var i = 0; i < res.length; i++) {
+      var byteArrayOfShare = Bitcoin.Base58.decode(res[i]);
+      var bigintOfShare = BigInteger.fromByteArrayUnsigned(byteArrayOfShare);
+      shares.push(bigintOfShare.toString(16));
+    }
+
+    var privateKey = secrets.combine(shares);
+
+    var key = new Bitcoin.ECKey(privateKey);
+    //$('#recoverSecret').html('<br>Recovered private key:<br><br><strong>' + key.getBitcoinWalletImportFormat() + '</strong>');
+    alert(key.getBitcoinWalletImportFormat());
+
+    var paperArea = document.getElementById("paperkeyarea");
+    paperArea.innerHTML = "";
+    ninja.wallets.paperwallet.count = 1;
+    var i = ninja.wallets.paperwallet.count;
+    var div = document.createElement("div");
+    div.setAttribute("id", "keyarea" + i);
+    if (ninja.wallets.paperwallet.useArtisticWallet) {
+      div.innerHTML = ninja.wallets.paperwallet.templateArtisticHtml(i);
+      div.setAttribute("class", "keyarea art");
+    }
+    else {
+      div.innerHTML = ninja.wallets.paperwallet.templateHtml(i);
+      div.setAttribute("class", "keyarea");
+    }
+
+    document.getElementById("paperkeyarea").appendChild(div);
+
+    var bitcoinAddress = key.getBitcoinAddress();
+    var privateKeyWif = key.getBitcoinWalletImportFormat();
+    if (ninja.wallets.paperwallet.useArtisticWallet) {
+      ninja.wallets.paperwallet.showArtisticWallet(1, bitcoinAddress, privateKeyWif);
+    }
+    else {
+      ninja.wallets.paperwallet.showWallet(1, bitcoinAddress, privateKeyWif);
     }
   },
 
@@ -279,56 +354,6 @@ ninja.wallets.paperwallet = {
     }
     else {
       ninja.wallets.paperwallet.showWallet(idPostFix, ninja.wallets.paperwallet.sharesBitcoinAddress, base58OfShare);
-    }
-  },
-
-  joinWalletShares: function (strShares) {
-
-    var res = strShares.split(";");
-    var shares = [];
-
-    if (res.length != 2) {
-      alert("Cannot join shares. Number of shares is " + res.length + " but it should be 2");
-      return;
-    }
-    ;
-
-    for (var i = 0; i < res.length; i++) {
-      var byteArrayOfShare = Bitcoin.Base58.decode(res[i]);
-      var bigintOfShare = BigInteger.fromByteArrayUnsigned(byteArrayOfShare);
-      shares.push(bigintOfShare.toString(16));
-    }
-
-    var privateKey = secrets.combine(shares);
-
-    var key = new Bitcoin.ECKey(privateKey);
-    //$('#recoverSecret').html('<br>Recovered private key:<br><br><strong>' + key.getBitcoinWalletImportFormat() + '</strong>');
-    alert(key.getBitcoinWalletImportFormat());
-
-    var paperArea = document.getElementById("paperkeyarea");
-    paperArea.innerHTML = "";
-    ninja.wallets.paperwallet.count = 1;
-    var i = ninja.wallets.paperwallet.count;
-    var div = document.createElement("div");
-    div.setAttribute("id", "keyarea" + i);
-    if (ninja.wallets.paperwallet.useArtisticWallet) {
-      div.innerHTML = ninja.wallets.paperwallet.templateArtisticHtml(i);
-      div.setAttribute("class", "keyarea art");
-    }
-    else {
-      div.innerHTML = ninja.wallets.paperwallet.templateHtml(i);
-      div.setAttribute("class", "keyarea");
-    }
-
-    document.getElementById("paperkeyarea").appendChild(div);
-
-    var bitcoinAddress = key.getBitcoinAddress();
-    var privateKeyWif = key.getBitcoinWalletImportFormat();
-    if (ninja.wallets.paperwallet.useArtisticWallet) {
-      ninja.wallets.paperwallet.showArtisticWallet(1, bitcoinAddress, privateKeyWif);
-    }
-    else {
-      ninja.wallets.paperwallet.showWallet(1, bitcoinAddress, privateKeyWif);
     }
   },
   generateSplitWallet: function() {
