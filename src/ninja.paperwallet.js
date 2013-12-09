@@ -342,7 +342,16 @@ ninja.wallets.paperwallet = {
       var el = document.createElement("div");
       el.className = 'no-print';
       el.style.textAlign = 'left';
-      el.innerHTML = '<strong>Your paper wallet address</strong>:<br> ' + document.getElementById('btcaddress1').innerHTML + '<br><br><strong>Your private SSSS keys:</strong><br>Key1: ' + document.getElementById('btcprivwif1').innerHTML + '<br>Key2: ' + document.getElementById('btcprivwif2').innerHTML + '<br>Key3: ' + document.getElementById('btcprivwif3').innerHTML;
+      el.innerHTML = '<br><strong>Your paper wallet address</strong>:<br> '
+        + document.getElementById('btcaddress1').innerHTML
+        + '<br><br><strong>Your private SSSS keys:</strong>';
+      for (var i = 1; i<=document.getElementById('shareCount').value * 1; i++) {
+        el.innerHTML += '<br>Key' + i + ': ' + document.getElementById('btcprivwif' + i).innerHTML;
+      }
+      el.innerHTML += '<br><br>';
+      //  + document.getElementById('btcprivwif1').innerHTML + '<br>Key2: '
+      //  + document.getElementById('btcprivwif2').innerHTML + '<br>Key3: '
+      //  + document.getElementById('btcprivwif3').innerHTML;
       paperkeyarea.insertBefore(el, paperkeyarea.firstChild);
       clearInterval(refreshIntervalId);
     }
